@@ -1,6 +1,3 @@
-// Prompt:
-// Generate a js script that based on an initial IPv4 address input, and the number of hosts required, gives you the: network add, first address, last address, and the broadcast address
-
 function ipToBinary(ip) {
     return ip
         .split(".")
@@ -17,62 +14,108 @@ function binaryToIp(binary) {
         .join(".");
 }
 
-function calculateSubnet(ip, numHosts) {
-    // Calculate required bits for hosts
-    const totalBits = 32; // IPv4 is 32 bits
-    let requiredBits = Math.ceil(Math.log2(numHosts + 2)); // +2 for network and broadcast
-
-    // Calculate subnet mask
-    let subnetBits = totalBits - requiredBits;
-    let subnetMask = ((0xffffffff << requiredBits) >>> 0)
-        .toString(2)
-        .padStart(32, "0");
-
-    // Calculate network address
-    let binaryIp = ipToBinary(ip);
-    let networkBinary =
-        binaryIp.substring(0, subnetBits) + "0".repeat(requiredBits);
-    let networkAddress = binaryToIp(networkBinary);
-
-    // Calculate broadcast address
-    let broadcastBinary =
-        binaryIp.substring(0, subnetBits) + "1".repeat(requiredBits);
-    let broadcastAddress = binaryToIp(broadcastBinary);
-
-    // Calculate first and last usable addresses
-    let firstAddressBinary =
-        networkBinary.substring(0, networkBinary.length - 1) + "1";
-    let lastAddressBinary =
-        broadcastBinary.substring(0, broadcastBinary.length - 1) + "0";
-
-    let firstAddress = binaryToIp(firstAddressBinary);
-    let lastAddress = binaryToIp(lastAddressBinary);
-
-    return {
-        networkAddress,
-        firstAddress,
-        lastAddress,
-        broadcastAddress,
-        subnetMask: subnetMask
-            .split("")
-            .map(
-                (bit, index) =>
-                    (index % 8 === 0 && index > 0 ? "." : "") +
-                    (bit === "1" ? "1" : "0")
-            )
-            .join("")
-            .replace(/\.0+/g, ".0")
-            .replace(/\.$/, ""),
-    };
+// Convert CIDR mask to binary subnet mask
+function cidrToMask(cidr) {
+    return "1"
+        .repeat(cidr)
+        .padEnd(32, "0")
+        .match(/.{1,8}/g)
+        .map((bin) => parseInt(bin, 2))
+        .join(".");
 }
 
-// Example usage:
-const ip = "192.168.0.0"; // Change this to your initial IP address
-const numHosts = 2; // Change this to the number of hosts required
+// Calculate the number of hosts based on CIDR mask
+function calculateHosts(cidr) {
+    return Math.pow(2, 32 - cidr) - 2; // Subtracting 2 for network and broadcast addresses
+}
 
-const result = calculateSubnet(ip, numHosts);
+function calculateSubnet(ip, numHosts = null, cidr = null) {
+    // Calculate based on the CIDR if provided
+    if (cidr !== null) {
+        let subnetBits = cidr;
+        let requiredBits = 32 - subnetBits;
+        let subnetMask = cidrToMask(cidr);
+
+        let binaryIp = ipToBinary(ip);
+        let networkBinary =
+            binaryIp.substring(0, subnetBits) + "0".repeat(requiredBits);
+        let broadcastBinary =
+            binaryIp.substring(0, subnetBits) + "1".repeat(requiredBits);
+
+        let networkAddress = binaryToIp(networkBinary);
+        let broadcastAddress = binaryToIp(broadcastBinary);
+
+        // Calculate first and last usable addresses
+        let firstAddressBinary =
+            networkBinary.substring(0, networkBinary.length - 1) + "1";
+        let lastAddressBinary =
+            broadcastBinary.substring(0, broadcastBinary.length - 1) + "0";
+
+        let firstAddress = binaryToIp(firstAddressBinary);
+        let lastAddress = binaryToIp(lastAddressBinary);
+
+        // Calculate how many hosts the subnet can support
+        let hostCapacity = calculateHosts(cidr);
+
+        return {
+            networkAddress,
+            firstAddress,
+            lastAddress,
+            broadcastAddress,
+            subnetMask,
+            hostCapacity,
+        };
+    }
+
+    // Calculate based on the number of hosts if no CIDR is provided
+    if (numHosts !== null) {
+        const totalBits = 32; // IPv4 is 32 bits
+        let requiredBits = Math.ceil(Math.log2(numHosts + 2)); // +2 for network and broadcast
+        let subnetBits = totalBits - requiredBits;
+        let subnetMask = cidrToMask(subnetBits);
+
+        let binaryIp = ipToBinary(ip);
+        let networkBinary =
+            binaryIp.substring(0, subnetBits) + "0".repeat(requiredBits);
+        let broadcastBinary =
+            binaryIp.substring(0, subnetBits) + "1".repeat(requiredBits);
+
+        let networkAddress = binaryToIp(networkBinary);
+        let broadcastAddress = binaryToIp(broadcastBinary);
+
+        // Calculate first and last usable addresses
+        let firstAddressBinary =
+            networkBinary.substring(0, networkBinary.length - 1) + "1";
+        let lastAddressBinary =
+            broadcastBinary.substring(0, broadcastBinary.length - 1) + "0";
+
+        let firstAddress = binaryToIp(firstAddressBinary);
+        let lastAddress = binaryToIp(lastAddressBinary);
+
+        // Calculate how many hosts the subnet can support
+        let hostCapacity = calculateHosts(subnetBits);
+
+        return {
+            networkAddress,
+            firstAddress,
+            lastAddress,
+            broadcastAddress,
+            subnetMask,
+            hostCapacity,
+        };
+    }
+
+    throw new Error("Either numHosts or CIDR must be provided.");
+}
+
+const ip = "192.168.1.0";
+const numHosts = null;
+const cidr = 26;
+
+const result = calculateSubnet(ip, numHosts, cidr);
 console.log(`Network Address: ${result.networkAddress}`);
 console.log(`First Address: ${result.firstAddress}`);
 console.log(`Last Address: ${result.lastAddress}`);
 console.log(`Broadcast Address: ${result.broadcastAddress}`);
 console.log(`Subnet Mask: ${result.subnetMask}`);
+console.log(`Host Capacity: ${result.hostCapacity}`);
