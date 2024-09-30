@@ -13,17 +13,37 @@ import {
 
 import React, { useState } from "react";
 
-export default function NewSubnetCard() {
+import calculateSubnet from "@/utils/subnetCalculator";
+
+export default function NewSubnetCard({ addSubnet }) {
     const [networkAddress, setNetworkAddress] = useState("");
     const [subnetMask, setSubnetMask] = useState("");
     const [hostCount, setHostCount] = useState("");
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+    const clearState = () => {
+        setNetworkAddress("");
+        setSubnetMask("");
+        setHostCount("");
+    };
+
     const onSubmit = (event) => {
         event.preventDefault();
-        console.log("Network Address:", networkAddress);
-        console.log("Subnet Mask:", subnetMask);
-        console.log("Host Count:", hostCount);
+
+        if (networkAddress === "" || (subnetMask === "" && hostCount === "")) {
+            return;
+        }
+
+        const ipv4Regex =
+            /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        if (!ipv4Regex.test(networkAddress)) {
+            return;
+        }
+
+        const subnet = calculateSubnet(networkAddress, hostCount, subnetMask);
+        addSubnet(subnet);
+        clearState();
+        onOpenChange();
     };
 
     return (
@@ -37,7 +57,10 @@ export default function NewSubnetCard() {
             </Card>
             <Modal
                 isOpen={isOpen}
-                onOpenChange={onOpenChange}
+                onOpenChange={(isOpen) => {
+                    onOpenChange(isOpen);
+                    if (!isOpen) clearState();
+                }}
                 className="dark text-foreground bg-background border border-white"
             >
                 <form onSubmit={onSubmit}>
@@ -59,6 +82,9 @@ export default function NewSubnetCard() {
                                     />
                                     <Input
                                         label="Máscara de subred"
+                                        type="number"
+                                        max={32}
+                                        min={1}
                                         value={subnetMask}
                                         onChange={(e) =>
                                             setSubnetMask(e.target.value)
@@ -66,6 +92,8 @@ export default function NewSubnetCard() {
                                     />
                                     <Input
                                         label="Cantidad de hosts"
+                                        type="number"
+                                        min={1}
                                         value={hostCount}
                                         onChange={(e) =>
                                             setHostCount(e.target.value)

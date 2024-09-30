@@ -23,12 +23,25 @@ import {
 import CalculatorNavBar from "./components/CalculatorNavBar/CalculatorNavBar";
 import NewSubnetCard from "./components/NewSubnetCard/NewSubnetCard";
 
+import { useState } from "react";
+
 export default function Calculator() {
+    const [subnets, setSubnets] = useState([]);
+
+    const addSubnet = (subnet) => {
+        setSubnets([...subnets, subnet]);
+        console.log(subnets);
+    };
+
+    const removeSubnet = (index) => {
+        setSubnets(subnets.filter((_, i) => i !== index));
+    };
+
     return (
         <>
             <CalculatorNavBar />
             <div className="p-8">
-                <NewSubnetCard />
+                <NewSubnetCard addSubnet={addSubnet} />
             </div>
         </>
     );
