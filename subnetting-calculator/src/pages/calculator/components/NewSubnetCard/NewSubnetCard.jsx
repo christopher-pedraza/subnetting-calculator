@@ -9,16 +9,20 @@ import {
     ModalFooter,
     useDisclosure,
     Input,
+    Checkbox,
 } from "@nextui-org/react";
 
 import React, { useState } from "react";
 
 import calculateSubnet from "@/utils/subnetCalculator";
 
-export default function NewSubnetCard({ addSubnet }) {
+export default function NewSubnetCard({ addSubnet, subnets }) {
     const [networkAddress, setNetworkAddress] = useState("");
     const [subnetMask, setSubnetMask] = useState("");
     const [hostCount, setHostCount] = useState("");
+
+    const [usePreviousSubnet, setUsePreviousSubnet] = useState(false);
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const clearState = () => {
@@ -29,6 +33,12 @@ export default function NewSubnetCard({ addSubnet }) {
 
     const onSubmit = (event) => {
         event.preventDefault();
+
+        if (usePreviousSubnet) {
+            const previousSubnet = subnets[subnets.length - 1];
+            // TODO: se necesita sumar 1 a la dirección de broadcast para que sea una direccion de red
+            setNetworkAddress(previousSubnet.broadcastAddress);
+        }
 
         if (networkAddress === "" || (subnetMask === "" && hostCount === "")) {
             return;
@@ -80,6 +90,12 @@ export default function NewSubnetCard({ addSubnet }) {
                                             setNetworkAddress(e.target.value)
                                         }
                                     />
+                                    <Checkbox
+                                        isSelected={usePreviousSubnet}
+                                        onValueChange={setUsePreviousSubnet}
+                                    >
+                                        Usar subred anterior
+                                    </Checkbox>
                                     <Input
                                         label="Máscara de subred"
                                         type="number"

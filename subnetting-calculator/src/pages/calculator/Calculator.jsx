@@ -41,7 +41,7 @@ export default function Calculator() {
         <>
             <CalculatorNavBar />
             <div className="p-8">
-                <NewSubnetCard addSubnet={addSubnet} />
+                <NewSubnetCard addSubnet={addSubnet} subnets={subnets} />
             </div>
         </>
     );
