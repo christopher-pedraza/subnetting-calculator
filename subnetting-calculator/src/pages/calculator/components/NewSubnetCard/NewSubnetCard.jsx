@@ -12,14 +12,18 @@ import {
     Checkbox,
 } from "@nextui-org/react";
 
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 
-import calculateSubnet from "@/utils/subnetCalculator";
+import {
+    calculateSubnet,
+    calculateNextNetworkAddress,
+} from "@/utils/subnetCalculator";
 
 export default function NewSubnetCard({ addSubnet, subnets }) {
     const [networkAddress, setNetworkAddress] = useState("");
     const [subnetMask, setSubnetMask] = useState("");
     const [hostCount, setHostCount] = useState("");
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const [usePreviousSubnet, setUsePreviousSubnet] = useState(false);
 
@@ -36,8 +40,9 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
 
         if (usePreviousSubnet) {
             const previousSubnet = subnets[subnets.length - 1];
-            // TODO: se necesita sumar 1 a la dirección de broadcast para que sea una direccion de red
-            setNetworkAddress(previousSubnet.broadcastAddress);
+            setNetworkAddress(
+                calculateNextNetworkAddress(previousSubnet.broadcastAddress)
+            );
         }
 
         if (networkAddress === "" || (subnetMask === "" && hostCount === "")) {
@@ -52,9 +57,24 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
 
         const subnet = calculateSubnet(networkAddress, hostCount, subnetMask);
         addSubnet(subnet);
+        console.log("NUEVA SUBRED:\n\n", subnet);
         clearState();
         onOpenChange();
     };
+
+    const changeUsePreviousSubnet = () => {
+        setUsePreviousSubnet(!usePreviousSubnet);
+        setIsDisabled(!isDisabled);
+    };
+
+    useEffect(() => {
+        if (usePreviousSubnet) {
+            const previousSubnet = subnets[subnets.length - 1];
+            setNetworkAddress(
+                calculateNextNetworkAddress(previousSubnet.broadcastAddress)
+            );
+        }
+    }, [usePreviousSubnet, subnets]);
 
     return (
         <>
@@ -84,6 +104,7 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
                                     <Input
                                         label="Dirección de red"
                                         placeholder="X.X.X.X"
+                                        isDisabled={isDisabled}
                                         isRequired
                                         value={networkAddress}
                                         onChange={(e) =>
@@ -92,7 +113,7 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
                                     />
                                     <Checkbox
                                         isSelected={usePreviousSubnet}
-                                        onValueChange={setUsePreviousSubnet}
+                                        onValueChange={changeUsePreviousSubnet}
                                     >
                                         Usar subred anterior
                                     </Checkbox>

@@ -29,7 +29,7 @@ function calculateHosts(cidr) {
     return Math.pow(2, 32 - cidr) - 2; // Subtracting 2 for network and broadcast addresses
 }
 
-export default function calculateSubnet(ip, numHosts = null, cidr = null) {
+function calculateSubnet(ip, numHosts = null, cidr = null) {
     // Calculate based on the CIDR if provided
     if (cidr !== null) {
         let subnetBits = cidr;
@@ -108,14 +108,12 @@ export default function calculateSubnet(ip, numHosts = null, cidr = null) {
     throw new Error("Either numHosts or CIDR must be provided.");
 }
 
-// const ip = "192.168.1.0";
-// const numHosts = null;
-// const cidr = 26;
+function calculateNextNetworkAddress(broadcastAddress) {
+    const binaryBroadcast = ipToBinary(broadcastAddress);
+    const nextNetworkBinary = (BigInt("0b" + binaryBroadcast) + BigInt(1))
+        .toString(2)
+        .padStart(32, "0");
+    return binaryToIp(nextNetworkBinary);
+}
 
-// const result = calculateSubnet(ip, numHosts, cidr);
-// console.log(`Network Address: ${result.networkAddress}`);
-// console.log(`First Address: ${result.firstAddress}`);
-// console.log(`Last Address: ${result.lastAddress}`);
-// console.log(`Broadcast Address: ${result.broadcastAddress}`);
-// console.log(`Subnet Mask: ${result.subnetMask}`);
-// console.log(`Host Capacity: ${result.hostCapacity}`);
+export { calculateSubnet, calculateNextNetworkAddress };
