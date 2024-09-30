@@ -24,10 +24,8 @@ import CalculatorNavBar from "./components/CalculatorNavBar/CalculatorNavBar";
 
 export default function Calculator() {
     return (
-        <div className="h-96">
+        <>
             <CalculatorNavBar />
-            <div className="h-96 bg-black"></div>
-            <h1>Calculator</h1>
-        </div>
+        </>
     );
 }

@@ -17,13 +17,22 @@ export default function CalculatorNavBar() {
             </NavbarBrand>
             <NavbarContent justify="end">
                 <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
+                    <Button as={Link} color="warning" href="#" variant="shadow">
                         Exportar como PDF
                     </Button>
-                    <Button as={Link} color="primary" href="#" variant="flat">
+                </NavbarItem>
+                <NavbarItem>
+                    <Button as={Link} color="primary" href="#" variant="shadow">
                         Compartir
                     </Button>
-                    <Button as={Link} color="primary" href="#" variant="flat">
+                </NavbarItem>
+                <NavbarItem>
+                    <Button
+                        as={Link}
+                        color="secondary"
+                        href="#"
+                        variant="shadow"
+                    >
                         Importar
                     </Button>
                 </NavbarItem>
