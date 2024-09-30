@@ -22,13 +22,12 @@ import {
 
 import CalculatorNavBar from "./components/CalculatorNavBar/CalculatorNavBar";
 
-function Calculator() {
+export default function Calculator() {
     return (
-        <div>
+        <div className="h-96">
             <CalculatorNavBar />
+            <div className="h-96 bg-black"></div>
             <h1>Calculator</h1>
         </div>
     );
 }
-
-export default Calculator;

@@ -3,17 +3,17 @@ import {
     NavbarBrand,
     NavbarContent,
     NavbarItem,
-    NavbarMenuToggle,
-    NavbarMenu,
-    NavbarMenuItem,
-} from "@nextui-org/navbar";
+    Link,
+    Button,
+} from "@nextui-org/react";
 
 export default function CalculatorNavBar() {
     return (
         <Navbar shouldHideOnScroll>
             <NavbarBrand>
-                <AcmeLogo />
-                <p className="font-bold text-inherit">ACME</p>
+                <p className="font-bold text-inherit uppercase">
+                    Subnetting Calculator
+                </p>
             </NavbarBrand>
             <NavbarContent justify="end">
                 <NavbarItem>
