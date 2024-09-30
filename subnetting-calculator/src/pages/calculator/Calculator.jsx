@@ -21,11 +21,15 @@ import {
 } from "@nextui-org/table";
 
 import CalculatorNavBar from "./components/CalculatorNavBar/CalculatorNavBar";
+import NewSubnetCard from "./components/NewSubnetCard/NewSubnetCard";
 
 export default function Calculator() {
     return (
         <>
             <CalculatorNavBar />
+            <div className="p-8">
+                <NewSubnetCard />
+            </div>
         </>
     );
 }
