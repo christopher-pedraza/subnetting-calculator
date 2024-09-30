@@ -11,17 +11,10 @@ import {
     ModalFooter,
 } from "@nextui-org/modal";
 import { Snippet } from "@nextui-org/snippet";
-import {
-    Table,
-    TableHeader,
-    TableBody,
-    TableColumn,
-    TableRow,
-    TableCell,
-} from "@nextui-org/table";
 
 import CalculatorNavBar from "./components/CalculatorNavBar/CalculatorNavBar";
 import NewSubnetCard from "./components/NewSubnetCard/NewSubnetCard";
+import SubnetCardList from "./components/SubnetCardList/SubnetCardList";
 
 import { useState } from "react";
 
@@ -41,6 +34,7 @@ export default function Calculator() {
         <>
             <CalculatorNavBar />
             <div className="p-8">
+                <SubnetCardList subnets={subnets} removeSubnet={removeSubnet} />
                 <NewSubnetCard addSubnet={addSubnet} subnets={subnets} />
             </div>
         </>
