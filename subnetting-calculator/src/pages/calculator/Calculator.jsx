@@ -10,15 +10,6 @@ import {
     ModalBody,
     ModalFooter,
 } from "@nextui-org/modal";
-import {
-    Navbar,
-    NavbarBrand,
-    NavbarContent,
-    NavbarItem,
-    NavbarMenuToggle,
-    NavbarMenu,
-    NavbarMenuItem,
-} from "@nextui-org/navbar";
 import { Snippet } from "@nextui-org/snippet";
 import {
     Table,
@@ -29,9 +20,12 @@ import {
     TableCell,
 } from "@nextui-org/table";
 
+import CalculatorNavBar from "./components/CalculatorNavBar/CalculatorNavBar";
+
 function Calculator() {
     return (
         <div>
+            <CalculatorNavBar />
             <h1>Calculator</h1>
         </div>
     );
