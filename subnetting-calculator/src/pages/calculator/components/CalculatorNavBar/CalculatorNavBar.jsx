@@ -38,7 +38,7 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
     const importCode = () => {
         const importedData = decodeCodeToData(shareCode);
         setSubnets(importedData);
-        console.log(importedData);
+        setIsOpenImport(false);
     };
 
     return (
@@ -85,7 +85,10 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
                         color="default"
                         className="dark text-foreground"
                         isOpen={isOpenImport}
-                        onOpenChange={(open) => setIsOpenImport(open)}
+                        onOpenChange={(open) => {
+                            setIsOpenImport(open);
+                            if (!open) setShareCode("");
+                        }}
                     >
                         <PopoverTrigger>
                             <Button
