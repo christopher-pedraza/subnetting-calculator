@@ -1,18 +1,23 @@
 // Import pako for compression (ES module syntax)
 import { deflate, inflate } from "pako";
 
-// Function to encode a string to base64 (browser-safe)
+// Function to encode a string to base64 (URL-safe)
 function toBase64(str) {
-    return btoa(String.fromCharCode(...new Uint8Array(str)));
+    let base64 = btoa(String.fromCharCode(...new Uint8Array(str)));
+    return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-// Function to decode a base64 string
+// Function to decode a URL-safe base64 string
 function fromBase64(str) {
+    str = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (str.length % 4) {
+        str += "=";
+    }
     return Uint8Array.from(atob(str), (c) => c.charCodeAt(0));
 }
 
 // Function to convert the JSON data to a short code
-export function generateCodeFromData(subnetData) {
+function generateCodeFromData(subnetData) {
     // Step 1: Convert JSON data to a string
     const jsonData = JSON.stringify(subnetData);
 
@@ -26,7 +31,7 @@ export function generateCodeFromData(subnetData) {
 }
 
 // Function to decode the code back into JSON
-export function decodeCodeToData(code) {
+function decodeCodeToData(code) {
     // Step 1: Decode the base64 code to compressed binary data
     const compressedData = fromBase64(code);
 
@@ -39,16 +44,4 @@ export function decodeCodeToData(code) {
     return subnetData; // This is the original subnet data
 }
 
-// Example usage:
-const subnetData = [
-    { s: "192.168.1.0", m: 24, h: 254 },
-    { s: "10.0.0.0", m: 16, h: 65534 },
-];
-
-// Generate a shareable code
-const code = generateCodeFromData(subnetData);
-console.log("Generated Code:", code);
-
-// Decode the code back to the original subnet data
-const decodedData = decodeCodeToData(code);
-console.log("Decoded Data:", decodedData);
+export { generateCodeFromData, decodeCodeToData };

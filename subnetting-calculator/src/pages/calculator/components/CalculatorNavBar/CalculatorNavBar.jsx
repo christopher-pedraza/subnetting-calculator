@@ -7,7 +7,17 @@ import {
     Button,
 } from "@nextui-org/react";
 
-export default function CalculatorNavBar() {
+import { generateCodeFromData } from "@/utils/SharebleCodeGenerator";
+
+export default function CalculatorNavBar({ subnets }) {
+    const share = () => {
+        const shareCode = generateCodeFromData(subnets);
+        const shareUrl = `${window.location.origin}/${shareCode}`;
+
+        navigator.clipboard.writeText(shareUrl);
+        alert("El enlace ha sido copiado al portapapeles");
+    };
+
     return (
         <Navbar shouldHideOnScroll>
             <NavbarBrand>
@@ -22,7 +32,13 @@ export default function CalculatorNavBar() {
                     </Button>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="shadow">
+                    <Button
+                        as={Link}
+                        color="primary"
+                        href="#"
+                        variant="shadow"
+                        onPress={share}
+                    >
                         Compartir
                     </Button>
                 </NavbarItem>
