@@ -5,17 +5,28 @@ import {
     NavbarItem,
     Link,
     Button,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
 } from "@nextui-org/react";
 
 import { generateCodeFromData } from "@/utils/SharebleCodeGenerator";
 
+import { useState, useEffect } from "react";
+
 export default function CalculatorNavBar({ subnets }) {
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        if (isOpen) {
+            share();
+            setTimeout(() => setIsOpen(false), 2000);
+        }
+    }, [isOpen]);
+
     const share = () => {
         const shareCode = generateCodeFromData(subnets);
-        const shareUrl = `${window.location.origin}/${shareCode}`;
-
-        navigator.clipboard.writeText(shareUrl);
-        alert("El enlace ha sido copiado al portapapeles");
+        navigator.clipboard.writeText(shareCode);
     };
 
     return (
@@ -32,15 +43,29 @@ export default function CalculatorNavBar({ subnets }) {
                     </Button>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button
-                        as={Link}
-                        color="primary"
-                        href="#"
-                        variant="shadow"
-                        onPress={share}
+                    <Popover
+                        placement="bottom"
+                        color="default"
+                        className="dark text-foreground"
+                        isOpen={isOpen}
+                        onOpenChange={(open) => setIsOpen(open)}
                     >
-                        Compartir
-                    </Button>
+                        <PopoverTrigger>
+                            <Button
+                                as={Link}
+                                color="primary"
+                                href="#"
+                                variant="shadow"
+                            >
+                                Compartir
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <div className="text-small font-bold">
+                                ¡Código para compartir copiado!
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                 </NavbarItem>
                 <NavbarItem>
                     <Button
