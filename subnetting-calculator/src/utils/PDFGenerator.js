@@ -30,24 +30,4 @@ function exportSubnetsToPDF(subnets) {
     doc.save("subnets.pdf");
 }
 
-// Example usage:
-const subnets = [
-    {
-        networkAddress: "192.168.1.0",
-        firstAddress: "192.168.1.1",
-        lastAddress: "192.168.1.254",
-        broadcastAddress: "192.168.1.255",
-        subnetMask: "255.255.255.0",
-        hostCapacity: 254,
-    },
-    {
-        networkAddress: "192.168.2.0",
-        firstAddress: "192.168.2.1",
-        lastAddress: "192.168.2.254",
-        broadcastAddress: "192.168.2.255",
-        subnetMask: "255.255.255.0",
-        hostCapacity: 254,
-    },
-];
-
-exportSubnetsToPDF(subnets);
+export { exportSubnetsToPDF };

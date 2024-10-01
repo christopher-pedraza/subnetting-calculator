@@ -16,11 +16,14 @@ import {
     decodeCodeToData,
 } from "@/utils/SharebleCodeGenerator";
 
+import { exportSubnetsToPDF } from "@/utils/PDFGenerator";
+
 import { useState, useEffect } from "react";
 
 export default function CalculatorNavBar({ subnets, setSubnets }) {
     const [isOpenShare, setIsOpenShare] = useState(false);
     const [isOpenImport, setIsOpenImport] = useState(false);
+    const [isOpenExport, setIsOpenExport] = useState(false);
     const [shareCode, setShareCode] = useState("");
 
     useEffect(() => {
@@ -29,6 +32,13 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
             setTimeout(() => setIsOpenShare(false), 2000);
         }
     }, [isOpenShare]);
+
+    useEffect(() => {
+        if (isOpenExport) {
+            exportSubnetsToPDF(subnets);
+            setTimeout(() => setIsOpenExport(false), 2000);
+        }
+    }, [isOpenExport]);
 
     const share = () => {
         const shareCode = generateCodeFromData(subnets);
@@ -50,9 +60,29 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
             </NavbarBrand>
             <NavbarContent justify="end">
                 <NavbarItem>
-                    <Button as={Link} color="warning" href="#" variant="shadow">
-                        Exportar como PDF
-                    </Button>
+                    <Popover
+                        placement="bottom"
+                        color="default"
+                        className="dark text-foreground"
+                        isOpen={isOpenExport}
+                        onOpenChange={(open) => setIsOpenExport(open)}
+                    >
+                        <PopoverTrigger>
+                            <Button
+                                as={Link}
+                                color="warning"
+                                href="#"
+                                variant="shadow"
+                            >
+                                Exportar como PDF
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <div className="text-small font-bold">
+                                ¡Código para compartir copiado!
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                 </NavbarItem>
                 <NavbarItem>
                     <Popover
