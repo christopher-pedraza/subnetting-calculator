@@ -32,7 +32,7 @@ export default function Calculator() {
 
     return (
         <>
-            <CalculatorNavBar subnets={subnets} />
+            <CalculatorNavBar subnets={subnets} setSubnets={setSubnets} />
             <div className="p-8">
                 <SubnetCardList subnets={subnets} removeSubnet={removeSubnet} />
                 <NewSubnetCard addSubnet={addSubnet} subnets={subnets} />

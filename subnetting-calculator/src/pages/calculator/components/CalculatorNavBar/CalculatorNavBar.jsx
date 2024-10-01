@@ -8,25 +8,37 @@ import {
     Popover,
     PopoverTrigger,
     PopoverContent,
+    Input,
 } from "@nextui-org/react";
 
-import { generateCodeFromData } from "@/utils/SharebleCodeGenerator";
+import {
+    generateCodeFromData,
+    decodeCodeToData,
+} from "@/utils/SharebleCodeGenerator";
 
 import { useState, useEffect } from "react";
 
-export default function CalculatorNavBar({ subnets }) {
-    const [isOpen, setIsOpen] = useState(false);
+export default function CalculatorNavBar({ subnets, setSubnets }) {
+    const [isOpenShare, setIsOpenShare] = useState(false);
+    const [isOpenImport, setIsOpenImport] = useState(false);
+    const [shareCode, setShareCode] = useState("");
 
     useEffect(() => {
-        if (isOpen) {
+        if (isOpenShare) {
             share();
-            setTimeout(() => setIsOpen(false), 2000);
+            setTimeout(() => setIsOpenShare(false), 2000);
         }
-    }, [isOpen]);
+    }, [isOpenShare]);
 
     const share = () => {
         const shareCode = generateCodeFromData(subnets);
         navigator.clipboard.writeText(shareCode);
+    };
+
+    const importCode = () => {
+        const importedData = decodeCodeToData(shareCode);
+        setSubnets(importedData);
+        console.log(importedData);
     };
 
     return (
@@ -47,8 +59,8 @@ export default function CalculatorNavBar({ subnets }) {
                         placement="bottom"
                         color="default"
                         className="dark text-foreground"
-                        isOpen={isOpen}
-                        onOpenChange={(open) => setIsOpen(open)}
+                        isOpen={isOpenShare}
+                        onOpenChange={(open) => setIsOpenShare(open)}
                     >
                         <PopoverTrigger>
                             <Button
@@ -68,14 +80,47 @@ export default function CalculatorNavBar({ subnets }) {
                     </Popover>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button
-                        as={Link}
-                        color="secondary"
-                        href="#"
-                        variant="shadow"
+                    <Popover
+                        placement="bottom"
+                        color="default"
+                        className="dark text-foreground"
+                        isOpen={isOpenImport}
+                        onOpenChange={(open) => setIsOpenImport(open)}
                     >
-                        Importar
-                    </Button>
+                        <PopoverTrigger>
+                            <Button
+                                as={Link}
+                                color="secondary"
+                                href="#"
+                                variant="shadow"
+                            >
+                                Importar
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <div>
+                                <Input
+                                    label="Código"
+                                    size="sm"
+                                    variant="bordered"
+                                    className="mb-2"
+                                    value={shareCode}
+                                    onChange={(e) =>
+                                        setShareCode(e.target.value)
+                                    }
+                                />
+                                <Button
+                                    color="secondary"
+                                    variant="shadow"
+                                    fullWidth
+                                    size="sm"
+                                    onClick={importCode}
+                                >
+                                    Importar
+                                </Button>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                 </NavbarItem>
             </NavbarContent>
         </Navbar>
