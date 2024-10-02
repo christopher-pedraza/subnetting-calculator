@@ -42,7 +42,7 @@ function exportSubnetsToPDF(subnets) {
         yPos += boxHeight + 10; // Move yPos for the next subnet
     });
 
-    doc.save("subnets.pdf");
+    doc.save("Subnets.pdf");
 }
 
 export { exportSubnetsToPDF };
