@@ -18,6 +18,7 @@ import {
     calculateSubnet,
     calculateNextNetworkAddress,
 } from "@/utils/subnetCalculator";
+import { sub } from "framer-motion/client";
 
 export default function NewSubnetCard({ addSubnet, subnets }) {
     const [networkAddress, setNetworkAddress] = useState("");
@@ -55,7 +56,14 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
             return;
         }
 
-        const subnet = calculateSubnet(networkAddress, hostCount, subnetMask);
+        const newHostCount = hostCount === "" ? null : parseInt(hostCount);
+        const newSubnetMask = subnetMask === "" ? null : subnetMask;
+
+        const subnet = calculateSubnet(
+            networkAddress,
+            newHostCount,
+            newSubnetMask
+        );
         addSubnet(subnet);
         console.log("NUEVA SUBRED:\n\n", subnet);
         clearState();
@@ -106,6 +114,7 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
                                         placeholder="X.X.X.X"
                                         isDisabled={isDisabled}
                                         isRequired
+                                        autoFocus
                                         value={networkAddress}
                                         onChange={(e) =>
                                             setNetworkAddress(e.target.value)
