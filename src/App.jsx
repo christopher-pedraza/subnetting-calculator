@@ -11,7 +11,11 @@ import {
 
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route path="/" element={<Calculator />}>
+        <Route
+            path="/"
+            element={<Calculator />}
+            basename="/subnetting-calculator"
+        >
             <Route path="/:importString" element={<Calculator />} />
         </Route>
     )
