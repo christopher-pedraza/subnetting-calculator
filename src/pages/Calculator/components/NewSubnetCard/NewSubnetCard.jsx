@@ -106,11 +106,11 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
                         {(onClose) => (
                             <>
                                 <ModalHeader className="flex flex-col gap-1">
-                                    Nueva subred
+                                    New Subnet
                                 </ModalHeader>
                                 <ModalBody>
                                     <Input
-                                        label="Dirección de red"
+                                        label="Network Address"
                                         placeholder="X.X.X.X"
                                         isDisabled={isDisabled}
                                         isRequired
@@ -124,10 +124,10 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
                                         isSelected={usePreviousSubnet}
                                         onValueChange={changeUsePreviousSubnet}
                                     >
-                                        Usar subred anterior
+                                        Use previous subnet
                                     </Checkbox>
                                     <Input
-                                        label="Máscara de subred"
+                                        label="Subnet Mask"
                                         type="number"
                                         max={32}
                                         min={1}
@@ -137,7 +137,7 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
                                         }
                                     />
                                     <Input
-                                        label="Cantidad de hosts"
+                                        label="Host Count"
                                         type="number"
                                         min={1}
                                         value={hostCount}
@@ -152,10 +152,10 @@ export default function NewSubnetCard({ addSubnet, subnets }) {
                                         variant="light"
                                         onPress={onClose}
                                     >
-                                        Cancelar
+                                        Cancel
                                     </Button>
                                     <Button color="primary" type="submit">
-                                        Crear subred
+                                        Add Subnet
                                     </Button>
                                 </ModalFooter>
                             </>

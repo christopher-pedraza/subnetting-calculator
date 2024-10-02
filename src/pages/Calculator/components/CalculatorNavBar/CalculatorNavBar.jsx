@@ -74,12 +74,12 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
                                 href="#"
                                 variant="shadow"
                             >
-                                Exportar como PDF
+                                Export as a PDF
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
                             <div className="text-small font-bold">
-                                ¡Código para compartir copiado!
+                                PDF exported!
                             </div>
                         </PopoverContent>
                     </Popover>
@@ -99,12 +99,12 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
                                 href="#"
                                 variant="shadow"
                             >
-                                Compartir
+                                Share
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
                             <div className="text-small font-bold">
-                                ¡Código para compartir copiado!
+                                Shareable code copied!
                             </div>
                         </PopoverContent>
                     </Popover>
@@ -127,13 +127,13 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
                                 href="#"
                                 variant="shadow"
                             >
-                                Importar
+                                Import
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
                             <div>
                                 <Input
-                                    label="Código"
+                                    label="Code"
                                     size="sm"
                                     variant="bordered"
                                     className="mb-2"
@@ -149,7 +149,7 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
                                     size="sm"
                                     onClick={importCode}
                                 >
-                                    Importar
+                                    Import
                                 </Button>
                             </div>
                         </PopoverContent>
