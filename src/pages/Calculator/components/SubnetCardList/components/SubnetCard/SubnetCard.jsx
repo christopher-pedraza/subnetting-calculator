@@ -43,6 +43,7 @@ export default function SubnetCard({ subnet, removeSubnet }) {
                         </TableCell>
                         <TableCell>
                             <CustomSnippet>{subnet.subnetMask}</CustomSnippet>
+                            <CustomSnippet>{`/${subnet.cidr}`}</CustomSnippet>
                         </TableCell>
                         <TableCell>
                             <CustomSnippet>{subnet.hostCapacity}</CustomSnippet>
