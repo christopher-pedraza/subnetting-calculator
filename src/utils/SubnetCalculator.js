@@ -64,6 +64,7 @@ function calculateSubnet(ip, numHosts = null, cidr = null) {
             broadcastAddress,
             subnetMask,
             hostCapacity,
+            cidr,
         };
     }
 
@@ -102,6 +103,7 @@ function calculateSubnet(ip, numHosts = null, cidr = null) {
             broadcastAddress,
             subnetMask,
             hostCapacity,
+            cidr: subnetBits,
         };
     }
 
@@ -117,10 +119,3 @@ function calculateNextNetworkAddress(broadcastAddress) {
 }
 
 export { calculateSubnet, calculateNextNetworkAddress };
-
-const ip = "172.16.0.0";
-const numHosts = 60;
-const cidr = null;
-
-const subnet = calculateSubnet(ip, numHosts, cidr);
-console.log(subnet);
