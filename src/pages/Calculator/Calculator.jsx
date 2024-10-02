@@ -33,7 +33,7 @@ export default function Calculator() {
     return (
         <>
             <CalculatorNavBar subnets={subnets} setSubnets={setSubnets} />
-            <div className="p-8">
+            <div className="p-8 bg-black">
                 <SubnetCardList subnets={subnets} removeSubnet={removeSubnet} />
                 <NewSubnetCard addSubnet={addSubnet} subnets={subnets} />
             </div>
