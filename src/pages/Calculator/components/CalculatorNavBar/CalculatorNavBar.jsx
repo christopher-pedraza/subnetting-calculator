@@ -51,8 +51,14 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
         setIsOpenImport(false);
     };
 
+    const onCodeSubmit = (event) => {
+        event.preventDefault();
+        importCode();
+        setShareCode("");
+    };
+
     return (
-        <Navbar shouldHideOnScroll>
+        <Navbar shouldHideOnScroll maxWidth="2xl">
             <NavbarBrand>
                 <p className="font-bold text-inherit uppercase">
                     Subnetting Calculator
@@ -131,13 +137,14 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
-                            <div>
+                            <form onSubmit={onCodeSubmit}>
                                 <Input
                                     label="Code"
                                     size="sm"
                                     variant="bordered"
                                     className="mb-2"
                                     value={shareCode}
+                                    autoFocus
                                     onChange={(e) =>
                                         setShareCode(e.target.value)
                                     }
@@ -147,11 +154,12 @@ export default function CalculatorNavBar({ subnets, setSubnets }) {
                                     variant="shadow"
                                     fullWidth
                                     size="sm"
+                                    type="submit"
                                     onClick={importCode}
                                 >
                                     Import
                                 </Button>
-                            </div>
+                            </form>
                         </PopoverContent>
                     </Popover>
                 </NavbarItem>

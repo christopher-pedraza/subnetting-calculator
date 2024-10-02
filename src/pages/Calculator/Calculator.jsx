@@ -31,12 +31,14 @@ export default function Calculator() {
     };
 
     return (
-        <>
-            <CalculatorNavBar subnets={subnets} setSubnets={setSubnets} />
-            <div className="p-8 bg-black">
+        <div className="bg-black">
+            <div className="mt-6">
+                <CalculatorNavBar subnets={subnets} setSubnets={setSubnets} />
+            </div>
+            <div className="p-8">
                 <SubnetCardList subnets={subnets} removeSubnet={removeSubnet} />
                 <NewSubnetCard addSubnet={addSubnet} subnets={subnets} />
             </div>
-        </>
+        </div>
     );
 }
