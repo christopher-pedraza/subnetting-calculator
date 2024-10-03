@@ -1,17 +1,3 @@
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Button, ButtonGroup } from "@nextui-org/button";
-import { Checkbox } from "@nextui-org/checkbox";
-import { Divider } from "@nextui-org/divider";
-import { Input } from "@nextui-org/input";
-import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-} from "@nextui-org/modal";
-import { Snippet } from "@nextui-org/snippet";
-
 import CalculatorNavBar from "./components/CalculatorNavBar/CalculatorNavBar";
 import NewSubnetCard from "./components/NewSubnetCard/NewSubnetCard";
 import SubnetCardList from "./components/SubnetCardList/SubnetCardList";
