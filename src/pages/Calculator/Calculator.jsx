@@ -23,7 +23,6 @@ export default function Calculator() {
 
     const addSubnet = (subnet) => {
         setSubnets([...subnets, subnet]);
-        console.log(subnets);
     };
 
     const removeSubnet = (index) => {

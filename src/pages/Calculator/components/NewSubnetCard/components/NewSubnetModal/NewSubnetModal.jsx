@@ -69,7 +69,6 @@ export default function NewSubnetModal({
             newSubnetMask
         );
         addSubnet(subnet);
-        console.log("NUEVA SUBRED:\n\n", subnet);
         clearState();
         onOpenChange();
     };
