@@ -25,6 +25,7 @@ export default function NewSubnetModal({
     const [networkAddress, setNetworkAddress] = useState("");
     const [subnetMask, setSubnetMask] = useState("");
     const [hostCount, setHostCount] = useState("");
+    const [numberOfSubnets, setNumberOfSubnets] = useState(1);
     const [isDisabled, setIsDisabled] = useState(false);
 
     const [usePreviousSubnet, setUsePreviousSubnet] = useState(false);
@@ -33,6 +34,7 @@ export default function NewSubnetModal({
         setNetworkAddress("");
         setSubnetMask("");
         setHostCount("");
+        setNumberOfSubnets(1);
     };
 
     const changeUsePreviousSubnet = () => {
@@ -42,6 +44,10 @@ export default function NewSubnetModal({
 
     const onSubmit = (event) => {
         event.preventDefault();
+
+        for (let i = 0; i < numberOfSubnets; i++) {
+            addSubnetFromForm();
+        }
 
         if (usePreviousSubnet) {
             const previousSubnet = subnets[subnets.length - 1];
@@ -113,6 +119,8 @@ export default function NewSubnetModal({
                                 <Checkbox
                                     isSelected={usePreviousSubnet}
                                     onValueChange={changeUsePreviousSubnet}
+                                    o
+                                    isDisabled={subnets.length === 0}
                                 >
                                     Use previous subnet
                                 </Checkbox>
@@ -121,6 +129,7 @@ export default function NewSubnetModal({
                                     type="number"
                                     max={32}
                                     min={1}
+                                    validate={{ min: 1, max: 32 }}
                                     value={subnetMask}
                                     onChange={(e) =>
                                         setSubnetMask(e.target.value)
@@ -130,9 +139,21 @@ export default function NewSubnetModal({
                                     label="Host Count"
                                     type="number"
                                     min={1}
+                                    validate={{ min: 1 }}
                                     value={hostCount}
                                     onChange={(e) =>
                                         setHostCount(e.target.value)
+                                    }
+                                />
+                                <Input
+                                    label="Number of subnets"
+                                    type="number"
+                                    defaultValue={1}
+                                    min={1}
+                                    validate={{ min: 1 }}
+                                    value={numberOfSubnets}
+                                    onChange={(e) =>
+                                        setNumberOfSubnets(e.target.value)
                                     }
                                 />
                             </ModalBody>
